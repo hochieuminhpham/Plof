@@ -10,6 +10,7 @@ export default function RootLayout() {
         }}
       />
       <Stack.Screen name="play" options={{ title: "Plof" }} />
+      <Stack.Screen name="swing" options={{ title: "Plof" }} />
     </Stack>
   );
 }
