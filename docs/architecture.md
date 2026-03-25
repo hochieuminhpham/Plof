@@ -19,7 +19,7 @@ DatenObjects
     - Id
     - EndDistance
     - isFinished
-    - TargetId
+    - target
     - UsedShots
     - AllowedShots
 - Ball
