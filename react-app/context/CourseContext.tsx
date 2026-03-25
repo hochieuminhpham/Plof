@@ -1,6 +1,7 @@
-import {createContext, ReactNode, useContext, useState} from "react";
+import {createContext, ReactNode, useContext, useEffect, useRef, useState} from "react";
 import React from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import {Alert} from "react-native";
 
 interface CourseContextProps{
     courses: Course[],
@@ -14,7 +15,70 @@ const CourseContext = createContext<CourseContextProps | undefined>(undefined);
 
 export function CourseContextProvider({children}:{children: ReactNode}){
     const [courses, setCourses ] = useState<Course[]>([]);
+    const initialMount = useRef(true);
 
+    const [targetId, setTargetId] = useState<number>(0);
+    const [ballId, setBallId] = useState<number>(0);
+
+    useEffect(() => {
+        generateCourse();
+    }, []);
+
+    useEffect(() => {
+        if (initialMount.current){
+            initialMount.current = false;
+            return;
+        }
+
+        const saveCourse = async () => {
+            try {
+                await AsyncStorage.setItem("Courses", JSON.stringify(courses))
+            } catch (e) {
+                console.log(e)
+            }
+        }
+
+        saveCourse();
+
+    },[courses])
+
+    const generateCourse = async () => {
+        try {
+
+            const target = {
+                id: targetId + 1,
+                xCoord: Math.floor(Math.random() * 5000),
+                yCoord: Math.floor(Math.random() * 8000),
+            };
+
+            const ball = {
+                id: ballId + 1,
+                xCoord: Math.floor(Math.random() * 5000),
+                yCoord: Math.floor(Math.random() * 8000),
+            };
+
+            const distance = Math.hypot(target.xCoord - ball.xCoord, target.yCoord - ball.yCoord);
+
+            const newCourse: Course = {
+                id: courses.length + 1,
+                EndDistance: distance,
+                isFinished: false,
+                target: target,
+                ball: ball,
+                usedShots: 0,
+                allowedShots: 10
+            };
+
+            addCourse(newCourse);
+            setTargetId(prev => prev + 1);
+            setBallId(prev => prev + 1);
+
+            const coursesAsString = JSON.stringify(courses);
+            await AsyncStorage.setItem("Courses", coursesAsString)
+        } catch (error){
+            console.log(error)
+        }
+    }
 
 
     const addCourse = (course: Course) => {
