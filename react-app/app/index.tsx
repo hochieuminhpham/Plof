@@ -1,16 +1,21 @@
-import { View } from "react-native";
-import Button from "../components/Button"
+import { Text, View } from "react-native";
+import Button from "../components/Button";
+import {useRouter} from 'expo-router';
 
 export default function Index() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Button name="Play"></Button>
-    </View>
-  );
+
+    const router = useRouter();
+
+    return (
+        <View
+        style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+        }}
+        >
+            <Text>Edit app/index.tsx to edit this screen.</Text>
+            <Button name="Play" onPress={() => router.push("/play")}></Button>
+        </View>
+    );
 }
