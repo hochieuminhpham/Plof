@@ -1,13 +1,10 @@
-import {View, Text, FlatList, Alert} from "react-native"
+import {View} from "react-native"
 import Button from "@/components/Button";
 import {useCourse} from "@/context/CourseContext";
-import {useState, useEffect} from "react";
 import {useRouter} from "expo-router";
-import React from "react"
-
-const router = useRouter();
 
 export default function Play() {
+    const router = useRouter();
     const courseContext = useCourse();
 
     return (

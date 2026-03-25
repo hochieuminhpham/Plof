@@ -1,7 +1,6 @@
 import {DeviceMotion, DeviceMotionMeasurement} from 'expo-sensors'
-import {EventSubscription, View, Text, StyleSheet, Alert, Animated} from "react-native";
+import {View, Text, StyleSheet, Animated} from "react-native";
 import {useEffect, useState} from "react";
-import React from "react"
 import {useCourse} from "@/context/CourseContext";
 import {useLocalSearchParams} from "expo-router";
 
