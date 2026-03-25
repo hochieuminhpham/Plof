@@ -8,38 +8,45 @@ import { DeviceMotion } from "expo-sensors";
 export default function Swing() {
   const [power, setPower] = useState(0);
   const [tracking, setTracking] = useState(false);
-  const [debugInfo, setDebugInfo] = useState("Not started");
+  const counter = useRef(0);
+  const vectorValues = useRef<{x: number, z: number, y: number}[]>([]);
 
   const baselineGravity = useRef<{ x: number; y: number; z: number } | null>(null);
+
+  function median(axis: "x" | "y" | "z"){
+    const sorted = [...vectorValues.current].map(v => v[axis]).sort((a, b) => a - b);
+    const middle = Math.floor(sorted.length / 2);
+    if(sorted.length % 2 === 0){
+      return (sorted[middle - 1] + sorted[middle]) / 2
+    }else {
+      return sorted[middle]
+    }
+  }
 
   useEffect(() => {
     // Set update interval explicitly — some devices won't fire without this
     DeviceMotion.setUpdateInterval(100);
 
     const subscription = DeviceMotion.addListener((motion) => {
-      // Log everything we receive so we can see what's available
-      const available = {
-        hasGravity: !!motion.gravity,
-        hasAcceleration: !!motion.acceleration,
-        hasAccIncGravity: !!motion.accelerationIncludingGravity,
-        hasRotation: !!motion.rotation,
-      };
-      setDebugInfo(JSON.stringify(available));
-
+      if(counter.current < 10){
+        const a = motion.accelerationIncludingGravity ?? null;
+        if(!a){
+          return;
+        }
+        vectorValues.current.push(a);
+        counter.current++;
+        return;
+      }
+      counter.current = 0;
       if (!tracking) return;
 
       // Try motion.gravity first, fall back to accelerationIncludingGravity
       // (accelerationIncludingGravity includes gravity component, which IS the
       // gravity vector when the phone is still — good enough for tilt detection)
-      const g =
-        motion.gravity ??
-        motion.accelerationIncludingGravity ??
-        null;
-
-      if (!g) {
-        setDebugInfo("No gravity data available at all!");
-        return;
-      }
+      const g: {x: number, y: number, z: number} = {x: 0, y: 0, z: 0}
+      g.x = median('x');
+      g.y = median('y');
+      g.z = median('z');
 
       if (!baselineGravity.current) {
         baselineGravity.current = { x: g.x, y: g.y, z: g.z };
@@ -55,8 +62,7 @@ export default function Swing() {
       if (magG === 0 || magBase === 0) return;
 
       // Dot product of the two unit vectors → cosine of angle between them
-      const dot =
-        (g.x * base.x + g.y * base.y + g.z * base.z) / (magG * magBase);
+      const dot =  (g.x * base.x + g.y * base.y + g.z * base.z) / (magG * magBase);
 
       const clampedDot = Math.max(-1, Math.min(1, dot));
       const angleRad = Math.acos(clampedDot);
@@ -82,8 +88,6 @@ export default function Swing() {
       <View style={styles.container}>
         <Button onPress={startTracking} name="Start Swing" />
         <Text style={styles.infoText}>Swing forward, if you want to shoot</Text>
-        {/* Temporary debug text — remove once working */}
-        <Text style={styles.debugText}>{debugInfo}</Text>
       </View>
       <SwingPowerBar value={power} />
     </View>
