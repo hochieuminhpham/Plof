@@ -10,6 +10,8 @@ export default function Swing() {
   const [tracking, setTracking] = useState(false);
   const counter = useRef(0);
   const vectorValues = useRef<{x: number, z: number, y: number}[]>([]);
+  const lastTimestamp = useRef<number | null>(null);
+  const speed = useRef(0);
 
   const baselineGravity = useRef<{ x: number; y: number; z: number } | null>(null);
 
@@ -17,7 +19,7 @@ export default function Swing() {
     const sorted = [...vectorValues.current].map(v => v[axis]).sort((a, b) => a - b);
     const middle = Math.floor(sorted.length / 2);
     if(sorted.length % 2 === 0){
-      return (sorted[middle - 1] + sorted[middle]) / 2
+      return (sorted[middle - 1] + sorted[middle] / 2)
     }else {
       return sorted[middle]
     }
@@ -25,7 +27,7 @@ export default function Swing() {
 
   useEffect(() => {
     // Set update interval explicitly — some devices won't fire without this
-    DeviceMotion.setUpdateInterval(100);
+    DeviceMotion.setUpdateInterval(10);
 
     const subscription = DeviceMotion.addListener((motion) => {
       if(counter.current < 10){
@@ -79,6 +81,8 @@ export default function Swing() {
   function startTracking() {
     baselineGravity.current = null;
     setPower(0);
+    speed.current = 0;
+    lastTimestamp.current = null;
     setTracking(true);
   }
 
