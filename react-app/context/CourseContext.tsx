@@ -29,12 +29,9 @@ export function CourseContextProvider({children}:{children: ReactNode}){
     const [ballId, setBallId] = useState<number>(0);
 
   useEffect(() => {
-    generateCourse();
-  }, []);
-
-  useEffect(() => {
     if (initialMount.current) {
       initialMount.current = false;
+      generateCourse();
       return;
     }
 
@@ -77,14 +74,13 @@ export function CourseContextProvider({children}:{children: ReactNode}){
         usedShots: 0,
         allowedShots: 10,
       };
-
-      addCourse(newCourse);
+      
       setTargetId((prev) => prev + 1);
       setBallId((prev) => prev + 1);
 
       const newCourses = [...courses, newCourse];
       setCourses(newCourses);
-      const coursesAsString = JSON.stringify(courses);
+      const coursesAsString = JSON.stringify(newCourses);
       await AsyncStorage.setItem("Courses", coursesAsString);
     } catch (error) {
       console.log(error);
@@ -95,8 +91,8 @@ export function CourseContextProvider({children}:{children: ReactNode}){
     setCourses((prevList) => [...prevList, course]);
   };
 
-  // is that wrong
   const updateCourse = (id: number, updatedCourse: Course) => {
+    console.log('update Course', id, updatedCourse)
     setCourses((prevList) =>
       prevList.map((course: Course) =>
         course.id === id ? updatedCourse : course,
@@ -105,6 +101,7 @@ export function CourseContextProvider({children}:{children: ReactNode}){
   };
 
   const getCourseById = (id: number) => {
+    console.log('get course with id '+ id);
     return courses.find((course) => course.id === id)!;
   };
 

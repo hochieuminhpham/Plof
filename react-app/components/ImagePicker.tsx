@@ -72,12 +72,12 @@ export default function ImagePickerComponent({imageUri, onImageSelected}:ImagePi
             {text: "cancel", onPress: () => console.log("Abgebrochen"), style: "cancel"}
         ]
 
-        Alert.alert("You want to take photo", "answer.", buttons);
+        // Alert.alert("You want to take photo", "answer.", buttons);
     }
 
     return (
-        <View style={styles.container}> {/* FIX: styles -> style */}
-            <TouchableOpacity onPress={handlePress} style={styles.image}> {/* FIX: style hinzufügen */}
+        <View style={styles.container}>
+            <TouchableOpacity onPress={handlePress} style={styles.image}>
                 {imageUri ? (
                     <Image source={{ uri: imageUri }} style={styles.image} />
                 ) : (

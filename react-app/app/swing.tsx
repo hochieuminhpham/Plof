@@ -31,12 +31,16 @@ const ROTATION_SCALE = 2.8; // rad/s at full swing → normalise to 1.0 (tune to
 
 export default function Swing() {
   const router = useRouter();
-  const { getCourseById, updateCourse } = useCourse();
+  const { courses, getCourseById, updateCourse } = useCourse();
   const { id } = useLocalSearchParams();
-  const course = getCourseById(parseInt(id as string));
+  const [course, setCourse] = useState(getCourseById(parseInt(id as string)));
+  const [localCourse, setLocalCourse] = useState(getCourseById(parseInt(id as string)));
   const [power, setPower] = useState(0);
   const [phase, setPhase] = useState<Phase>("idle");
   const [hitSpeed, setHitSpeed] = useState<number | null>(null);
+  const [test, setTest] = useState<number>(0);
+
+  let x = useRef(0);
 
   // Sensor baseline
   const baselineGyro = useRef({ alpha: 0, beta: 0, gamma: 0 });
@@ -59,11 +63,15 @@ export default function Swing() {
     setPhase(p);
   }
 
-  function calculateDistance() {
+  function handleSwing() {
     if (course.usedShots >= course.allowedShots) {
       router.push("./statistic");
       return;
     }
+
+    const correctCourse = getCourseById(parseInt(id as string));
+    console.log('is it already updated', correctCourse);
+    console.log('this is the course state of the functional component', course);
     // 1. Get swing direction
     const dir = swingDirection.current;
     if (!dir) return;
@@ -94,17 +102,40 @@ export default function Swing() {
       course.target.yCoord - newBall.yCoord,
     );
 
+    console.log('localCourse course before update', localCourse);
+    
+
+    setTest(prev => prev + 1);
+    x.current = x.current +1;
+    console.log(x);
+    console.log('attempt', test);
+    console.log('calculateDistance course before update', course);
     // 6. Update course
     const updatedCourse = {
-      ...course,
+      ...localCourse,
       ball: newBall,
       EndDistance: newDistance,
-      usedShots: course.usedShots + 1,
+      usedShots: x.current,
     };
 
+    console.log('calculateDistance updated Course', updatedCourse);
+
+    setLocalCourse(updatedCourse);
     updateCourse(parseInt(id as string), updatedCourse);
     setPhaseSync("idle");
   }
+
+
+  useEffect(() => {
+    console.log('localCourse was updated (useEffect)', localCourse);
+  }, [localCourse])
+  useEffect(()=> {
+    const newCourse = getCourseById(parseInt(id as string));
+    console.log('courses got updated', newCourse);
+    setCourse(newCourse);
+    console.log('Finished courses got updated', newCourse);
+
+  }, [courses, getCourseById, id]);
 
   useEffect(() => {
     DeviceMotion.setUpdateInterval(50); // 20 Hz
@@ -226,7 +257,10 @@ export default function Swing() {
           setPower(0);
           smoothedPower.current = 0;
           setPhaseSync("done");
-          calculateDistance();
+          console.log('going to call handle Swing')
+          handleSwing();
+          console.log('called handle Swing')
+
         }
         return;
       }
