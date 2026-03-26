@@ -1,5 +1,5 @@
-import {Ball} from "@/models/Ball";
-import {Target} from "./Target";
+import Target from "./Target";
+import Ball from "./Ball";
 
 interface Course{
     id: number,
