@@ -65,7 +65,7 @@ const checkAvailibility = async () => {
   return (
     <View style={styles.badge}>
       <Text>Target:</Text>
-      <Text>{Math.floor(calculateDistance(courses[0].id))}</Text>
+      <Text>{Math.floor(calculateDistance(parseInt(id as string)))}</Text>
       <Pressable>
         <Compass
           alpha={userData?.rotation?.alpha?.toFixed(2)!}
