@@ -8,6 +8,8 @@ interface CourseContextProps{
     updateCourse: (id: number, course: Course) => void
     calculateDistance: (id: number) => number,
     getCourseById: (id: number) => Course,
+    image: string | undefined,
+    setImage: (image: string) => void
 }
 
 const CourseContext = createContext<CourseContextProps | undefined>(undefined);
@@ -15,7 +17,7 @@ const CourseContext = createContext<CourseContextProps | undefined>(undefined);
 export function CourseContextProvider({children}:{children: ReactNode}){
     const [courses, setCourses ] = useState<Course[]>([]);
     const initialMount = useRef(true);
-
+    const [image, setImage] = useState<string>();
     const [targetId, setTargetId] = useState<number>(0);
     const [ballId, setBallId] = useState<number>(0);
 
@@ -101,7 +103,7 @@ export function CourseContextProvider({children}:{children: ReactNode}){
     }
 
     return (
-        <CourseContext.Provider value={{courses, addCourse, updateCourse, calculateDistance, getCourseById}}>
+        <CourseContext.Provider value={{courses, addCourse, updateCourse, calculateDistance, getCourseById, image, setImage}}>
             {children}
         </CourseContext.Provider>
     )
