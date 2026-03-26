@@ -9,22 +9,24 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Course from "@/models/Course";
 
-interface CourseContextProps {
-  courses: Course[];
-  addCourse: (course: Course) => void;
-  updateCourse: (id: number, course: Course) => void;
-  calculateDistance: (id: number) => number;
-  getCourseById: (id: number) => Course;
+interface CourseContextProps{
+    courses: Course[],
+    addCourse: (course: Course) => void,
+    updateCourse: (id: number, course: Course) => void
+    calculateDistance: (id: number) => number,
+    getCourseById: (id: number) => Course,
+    image: string | undefined,
+    setImage: (image: string) => void
 }
 
 const CourseContext = createContext<CourseContextProps | undefined>(undefined);
 
-export function CourseContextProvider({ children }: { children: ReactNode }) {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const initialMount = useRef(true);
-
-  const [targetId, setTargetId] = useState<number>(0);
-  const [ballId, setBallId] = useState<number>(0);
+export function CourseContextProvider({children}:{children: ReactNode}){
+    const [courses, setCourses ] = useState<Course[]>([]);
+    const initialMount = useRef(true);
+    const [image, setImage] = useState<string>();
+    const [targetId, setTargetId] = useState<number>(0);
+    const [ballId, setBallId] = useState<number>(0);
 
   useEffect(() => {
     generateCourse();
@@ -113,20 +115,11 @@ export function CourseContextProvider({ children }: { children: ReactNode }) {
       course.target.yCoord - course.ball.yCoord,
     );
   };
-
-  return (
-    <CourseContext.Provider
-      value={{
-        courses,
-        addCourse,
-        updateCourse,
-        calculateDistance,
-        getCourseById,
-      }}
-    >
-      {children}
-    </CourseContext.Provider>
-  );
+    return (
+        <CourseContext.Provider value={{courses, addCourse, updateCourse, calculateDistance, getCourseById, image, setImage}}>
+            {children}
+        </CourseContext.Provider>
+    )
 }
 
 export function useCourse() {
