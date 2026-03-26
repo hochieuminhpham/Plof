@@ -4,6 +4,7 @@ import Button from "@/components/Button";
 import SwingPowerBar from "@/components/SwingBar";
 import { useEffect, useState, useRef } from "react";
 import { DeviceMotion } from "expo-sensors";
+import HelpButton from "@/components/HelpButton";
 
 // Swing phases:
 //   "idle"       → waiting for user to press Start
@@ -163,19 +164,23 @@ export default function Swing() {
   };
 
   return (
-    <View>
-      <Badge />
-      <View style={styles.container}>
-        <Button onPress={startTracking} name="Start Swing" />
-        <Text style={styles.phaseText}>{phaseLabel[phase]}</Text>
-        <Text style={styles.infoText}>
-          {phase === "done" && hitSpeed !== null
-            ? `Hit speed: ${hitSpeed} m/s²`
-            : "Swing forward to shoot"}
-        </Text>
+      <View>
+        <View>
+          <Badge />
+          <View style={styles.container}>
+            <Button onPress={startTracking} name="Start Swing" />
+            <Text style={styles.phaseText}>{phaseLabel[phase]}</Text>
+            <Text style={styles.infoText}>
+              {phase === "done" && hitSpeed !== null
+                ? `Hit speed: ${hitSpeed} m/s²`
+                : "Swing forward to shoot"}
+            </Text>
+          </View>
+          <SwingPowerBar value={power} />
+        </View>
+        <HelpButton />
       </View>
-      <SwingPowerBar value={power} />
-    </View>
+
   );
 }
 
