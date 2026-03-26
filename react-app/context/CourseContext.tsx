@@ -87,10 +87,9 @@ export function CourseContextProvider({children}:{children: ReactNode}){
     }
 
     const updateCourse = (id: number, updatedCourse: Course) => {
-        setCourses(prevList => {
+        setCourses(prevList =>
             prevList.map((course: Course) => course.id === id ? updatedCourse : course)
-            return prevList;
-        })
+        )
     }
 
     const getCourseById = (id: number) => {
