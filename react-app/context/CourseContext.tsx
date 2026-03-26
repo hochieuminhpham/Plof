@@ -2,6 +2,7 @@ import {createContext, ReactNode, useContext, useEffect, useRef, useState} from 
 import React from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import {Alert} from "react-native";
+import Course from "@/models/Course";
 
 interface CourseContextProps{
     courses: Course[],

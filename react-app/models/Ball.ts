@@ -4,3 +4,5 @@ interface Ball{
     xCoord: number,
     yCoord: number
 }
+
+export default Ball
