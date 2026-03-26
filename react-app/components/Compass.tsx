@@ -5,28 +5,29 @@ import React from "react";
 interface CompassProps {
     alpha: string,
     relativeAngle: number,
-    targetAngle: string
+    targetAngle: string,
+    isOverlay: boolean
 }
 
-export function Compass({alpha, relativeAngle, targetAngle}:CompassProps){
+export function Compass({alpha, relativeAngle, targetAngle, isOverlay}:CompassProps){
 
     return (
         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Your Angle: {alpha}</Text>
+            {!isOverlay && <Text>Your Angle: {alpha}</Text>}
 
             {/* Der Kompass-Container */}
-            <View style={Styles().container}>
+            <View style={!isOverlay ? Styles().container : Styles().containerOverlay}>
                 <Animated.View
                     style={[
-                        Styles().arrow,
+                        !isOverlay ? Styles().arrow : Styles().arrowOverlay,
                         { transform: [{ rotate: `${relativeAngle}rad` }] }
                     ]}
                 >
-                    <View style={Styles().arrowHead} />
+                    <View style={!isOverlay ? Styles().arrowHead : Styles().arrowHeadOverlay} />
                 </Animated.View>
             </View>
 
-            <Text>Target's Angle: {targetAngle}</Text>
+            {!isOverlay && <Text>Target's Angle: {targetAngle}</Text>}
         </View>
     )
 }

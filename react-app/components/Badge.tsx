@@ -71,6 +71,7 @@ const checkAvailibility = async () => {
           alpha={userData?.rotation?.alpha?.toFixed(2)!}
           relativeAngle={relativeAngle}
           targetAngle={targetAngle.toFixed(2)}
+          isOverlay={true}
         />
       </Pressable>
     </View>
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
   badge: {
     display: "flex",
     flexDirection: "row",
-    backgroundColor: "green",
+    backgroundColor: '#F0F9F4',
     borderTopLeftRadius: 20,
     borderTopRightRadius: 0,
     borderBottomRightRadius: 0,
@@ -89,6 +90,9 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     paddingHorizontal: 60,
     paddingVertical: 20,
+    padding: 50,
     marginTop: 20,
+    marginBottom: 60,
+    color: "white"
   },
 });

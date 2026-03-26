@@ -60,7 +60,7 @@ export default function NextTarget(){
     }, [userData, targetAngle]);
 
     return (
-        <Compass alpha={userData?.rotation?.alpha?.toFixed(2)!} relativeAngle={relativeAngle} targetAngle={targetAngle.toFixed(2)}/>
+        <Compass alpha={userData?.rotation?.alpha?.toFixed(2)!} relativeAngle={relativeAngle} targetAngle={targetAngle.toFixed(2)} isOverlay={false}/>
     );
 }
 
