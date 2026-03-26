@@ -1,4 +1,3 @@
-
 interface Ball{
     id: number,
     xCoord: number,
