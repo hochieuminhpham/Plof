@@ -3,6 +3,8 @@ import {View, Text, StyleSheet, Animated} from "react-native";
 import {useEffect, useState} from "react";
 import {useCourse} from "@/context/CourseContext";
 import {useLocalSearchParams} from "expo-router";
+import {Styles} from '@/style/style'
+import {Compass} from "@/components/Compass";
 
 export default function NextTarget(){
     const courseContext = useCourse();
@@ -58,45 +60,7 @@ export default function NextTarget(){
     }, [userData, targetAngle]);
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <Text>Alpha: {userData?.rotation?.alpha?.toFixed(2)}</Text>
-
-            {/* Der Kompass-Container */}
-            <View style={styles.container}>
-                <Animated.View
-                    style={[
-                        styles.arrow,
-                        { transform: [{ rotate: `${relativeAngle}rad` }] }
-                    ]}
-                >
-                    <View style={styles.arrowHead} />
-                </Animated.View>
-            </View>
-
-            <Text>Ziel-Winkel: {targetAngle.toFixed(2)}</Text>
-        </View>
+        <Compass alpha={userData?.rotation?.alpha?.toFixed(2)!} relativeAngle={relativeAngle} targetAngle={targetAngle.toFixed(2)}/>
     );
 }
 
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 100,
-    },
-    arrow: {
-        width: 2,
-        height: 60,
-        backgroundColor: 'red',
-        alignItems: 'center',
-    },
-    arrowHead: {
-        width: 10,
-        height: 10,
-        borderTopWidth: 2,
-        borderRightWidth: 2,
-        borderColor: 'red',
-        transform: [{ rotate: '-45deg' }],
-        marginTop: -5,
-    }
-});

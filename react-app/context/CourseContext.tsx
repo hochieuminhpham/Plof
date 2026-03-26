@@ -1,6 +1,6 @@
 import {createContext, ReactNode, useContext, useEffect, useRef, useState} from "react";
-import { Course } from "@/models/Course";
 import AsyncStorage from "@react-native-async-storage/async-storage"
+import Course from "@/models/Course";
 
 interface CourseContextProps{
     courses: Course[],

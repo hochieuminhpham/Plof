@@ -3,3 +3,5 @@ export interface Target{
     xCoord: number,
     yCoord: number
 }
+
+export default Target;

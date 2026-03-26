@@ -1,6 +1,7 @@
-import { Target } from "./Target"
-import { Ball } from "./Ball"
-export interface Course{
+import {Ball} from "@/models/Ball";
+import {Target} from "./Target";
+
+interface Course{
     id: number,
     EndDistance: number,
     isFinished: boolean,
@@ -9,3 +10,5 @@ export interface Course{
     usedShots: number,
     allowedShots: number
 }
+
+export default Course
