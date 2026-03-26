@@ -21,8 +21,8 @@ const style = () => {
             elevation: 5,
         },
         containerOverlay: {
-            width: 20,
-            height: 20,
+            width: 30,
+            height: 30,
             borderRadius: 100,
             borderWidth: 4,
             borderColor: '#2D6A4F', // Dunkles Smaragdgrün
@@ -36,6 +36,7 @@ const style = () => {
             shadowOpacity: 0.1,
             shadowRadius: 10,
             elevation: 5,
+            marginLeft: 10
         },
         arrow: {
             width: 4,
@@ -55,7 +56,7 @@ const style = () => {
         },
         arrowOverlay: {
             width: 4,
-            height: 60, // Länger für bessere Sichtbarkeit
+            height: 40, // Länger für bessere Sichtbarkeit
             backgroundColor: '#4CBB17', // Kelly Green für den Zeiger
             alignItems: 'center',
             borderRadius: 2,
