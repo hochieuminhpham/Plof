@@ -1,16 +1,15 @@
 import {DeviceMotion, DeviceMotionMeasurement} from 'expo-sensors'
-import {EventSubscription, View, Text, StyleSheet, Alert, Animated} from "react-native";
+import {View, Text, StyleSheet, Animated} from "react-native";
 import {useEffect, useState} from "react";
-import React from "react"
 import {useCourse} from "@/context/CourseContext";
 import {useLocalSearchParams} from "expo-router";
 import {Styles} from '@/style/style'
 import {Compass} from "@/components/Compass";
 
 export default function NextTarget(){
-    const courseContext = useCourse();
+    const {getCourseById} = useCourse();
     const {id} = useLocalSearchParams();
-    const course = courseContext.getCourseById(parseInt(id as string));
+    const course = getCourseById(parseInt(id as string));
     const [userData, setUserData] = useState<DeviceMotionMeasurement>();
     const [targetAngle, setTargetAngle] = useState(Math.atan2(course.target.yCoord - course.ball.yCoord, course.target.xCoord - course.ball.xCoord));
     const [relativeAngle, setRelativeAngle] = useState(0);
