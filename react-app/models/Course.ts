@@ -1,3 +1,4 @@
+import Ball from "@/models/Ball";
 
 interface Course{
     id: number,
@@ -8,3 +9,5 @@ interface Course{
     usedShots: number,
     allowedShots: number
 }
+
+export default Course
